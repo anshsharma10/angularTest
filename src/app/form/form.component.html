@@ -1,0 +1,121 @@
+<!-- Uncomment to view form array
+{{getOrders().value | json}}
+{{ getOrders().valid }}
+-->
+
+<hr>
+<form [formGroup]="group" (ngSubmit)="onSubmit(getOrders())">
+	<div formArrayName="masterForm">
+		<div *ngFor="let order of group.get('masterForm')['controls']; let i=index">
+			<div [formGroupName]="i">
+        <h3>Order {{i + 1}} </h3>
+				<p>Choose a meal:
+					<small style="color:red" [hidden]="getOrders()['controls'][i]['controls']['orderChoice'].value != ''">(Required field)</small>
+				</p>
+				<label>
+          <input type="radio" value="burger" formControlName="orderChoice" (click)="resetSteak(i)">
+            <span>Burger</span>
+        </label>
+				<label>
+          <input type="radio" value="steak" formControlName="orderChoice" (click)="resetBurger(i)">
+            <span>Steak</span>
+        </label>
+
+				<div [hidden]="getOrders()['controls'][i]['controls']['orderChoice'].value != 'burger'">
+					<p>Choose condiments:</p>
+					<input type="checkbox" value="ketchup" formControlName="ketchup">
+          Ketchup <br>
+					<input type="checkbox" value="mustard" formControlName="mustard">
+          Mustard <br>
+					<input type="checkbox" value="lettuce" formControlName="lettuce">
+          Lettuce <br>
+					<input type="checkbox" value="tomato" formControlName="tomato">
+          Tomato <br>
+
+					<p>Choose a side:
+						<small style="color:red" [hidden]="getOrders()['controls'][i]['controls']['burgerChoice'].value != ''">(Required field)</small>
+					</p>
+					<label>
+          <input type="radio" value="fries" formControlName="burgerChoice" (click)="resetSalad(i)">
+            <span>Fries</span>
+        </label>
+					<label>
+          <input type="radio" value="salad" formControlName="burgerChoice" (click)="resetFries(i)">
+            <span>Salad</span>
+        </label>
+
+					<div [hidden]="getOrders()['controls'][i]['controls']['burgerChoice'].value != 'fries'">
+						<p>Choose a size for your fries:
+							<small style="color:red" [hidden]="getOrders()['controls'][i]['controls']['fries'].value != ''">(Required field)</small>
+						</p>
+						<select formControlName="fries">
+            <option value="small">Small</option>
+            <option value="medium">Medium</option>
+            <option value="large">Large</option>
+          </select>
+					</div>
+
+					<div [hidden]="getOrders()['controls'][i]['controls']['burgerChoice'].value != 'salad'">
+						<p>Choose a dressing for your salad:
+							<small style="color:red" [hidden]="getOrders()['controls'][i]['controls']['salad'].value != ''">(Required field)</small>
+						</p>
+						<select formControlName="salad">
+            <option value="caesar">Caesar</option>
+            <option value="balsamic">Balsamic</option>
+          </select>
+					</div>
+				</div>
+
+				<div [hidden]="getOrders()['controls'][i]['controls']['orderChoice'].value != 'steak'">
+					<p>Choose your steak's doneness:
+						<small style="color:red" [hidden]="getOrders()['controls'][i]['controls']['doneness'].value != ''">(Required field)</small>
+					</p>
+					<select formControlName="doneness">
+          <option value="rare">Rare</option>
+          <option value="medium">Medium</option>
+          <option value="well-done">Well-done</option>
+        </select>
+
+					<p>Choose a side:
+						<small style="color:red" [hidden]="getOrders()['controls'][i]['controls']['steakChoice'].value != ''">(Required field)</small>
+					</p>
+					<label>
+          <input type="radio" value="salad" formControlName="steakChoice" (click)="resetPotato(i)">
+            <span>Salad</span>
+        </label>
+					<label>
+          <input type="radio" value="potato" formControlName="steakChoice" (click)="resetSalad(i)">
+            <span>Baked Potato(es)</span>
+        </label>
+
+					<div [hidden]="getOrders()['controls'][i]['controls']['steakChoice'].value != 'salad'">
+						<p>Choose a dressing for your salad:
+							<small style="color:red" [hidden]="getOrders()['controls'][i]['controls']['salad'].value != ''">(Required field)</small>
+						</p>
+						<select formControlName="salad">
+            <option value="caesar">Caesar</option>
+            <option value="balsamic">Balsamic</option>
+          </select>
+					</div>
+					<div [hidden]="getOrders()['controls'][i]['controls']['steakChoice'].value != 'potato'">
+						<p>How many potatoes would you like?
+							<small style="color:red" [hidden]="!getOrders()['controls'][i]['controls']['potato'].errors">(Required field, must be a valid #!)</small>
+						</p>
+						<input type="text" size="30" maxlength="50" formControlName="potato" >
+          </div>
+					</div>
+
+					<p> Add special instructions? </p>
+					<input type="text" size="60" formControlName="special" >
+					<button (click)="removeOrder(i)">Remove this order</button>
+					<hr>
+
+
+				</div>
+			</div>
+		</div>
+
+		<button (click)="addForm()" type="button">Add new order</button>
+		<hr>
+		<button [disabled]="!getOrders().valid || getOrders().length == 0" type="submit">Submit your orders</button><small style="color:red" [hidden]="getOrders().length != 0"> Please order at least one item!</small><small style="color:red" [hidden]="getOrders().valid"> Please make sure your order is valid!</small>
+</form>

@@ -1,0 +1,27 @@
+<h2>Your orders:</h2>
+
+<div *ngFor="let order of getOrders().controls; let i=index">
+  <h4>Order {{i + 1}}:</h4>
+  <p>Meal option: One 
+    <span *ngIf="getOrders()['controls'][i]['controls']['orderChoice'].value == 'steak'">{{getOrders()['controls'][i]['controls']['doneness'].value}}</span>
+  {{getOrders()['controls'][i]['controls']['orderChoice'].value}}<span *ngIf="getOrders()['controls'][i]['controls']['orderChoice'].value == 'burger'">, with:
+    </span> </p>
+
+  <ul *ngIf="getOrders()['controls'][i]['controls']['orderChoice'].value == 'burger'">
+    <li *ngIf="getOrders()['controls'][i]['controls']['ketchup'].value != ''"> Ketchup </li>
+    <li *ngIf="getOrders()['controls'][i]['controls']['mustard'].value != ''"> Mustard </li>
+    <li *ngIf="getOrders()['controls'][i]['controls']['lettuce'].value != ''"> Lettuce </li>
+    <li *ngIf="getOrders()['controls'][i]['controls']['tomato'].value != ''"> Tomatoes </li>
+  </ul>
+  <p>Side order: 
+    <span *ngIf="getOrders()['controls'][i]['controls']['fries'].value != ''">One {{getOrders()['controls'][i]['controls']['fries'].value}} fries</span>
+    <span *ngIf="getOrders()['controls'][i]['controls']['salad'].value != ''">One salad with {{getOrders()['controls'][i]['controls']['salad'].value}} dressing</span>
+    <span *ngIf="getOrders()['controls'][i]['controls']['potato'].value != ''">{{getOrders()['controls'][i]['controls']['potato'].value}} baked potato(es)</span>
+  </p>
+
+  <p *ngIf="getOrders()['controls'][i]['controls']['special'].value != ''"> 
+    Special instructions: {{getOrders()['controls'][i]['controls']['special'].value}}
+  </p>
+</div>
+<hr>
+<button (click)="returnToOrder()">Return to order</button>
